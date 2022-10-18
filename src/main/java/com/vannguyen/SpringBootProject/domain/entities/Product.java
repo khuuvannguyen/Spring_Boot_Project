@@ -2,6 +2,7 @@ package com.vannguyen.SpringBootProject.domain.entities;
 
 import com.vannguyen.SpringBootProject.application.responses.ProductResponse;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "tbl_product")
 public class Product {
@@ -33,6 +35,14 @@ public class Product {
     @JoinColumn(name = "updatedBy")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Account updatedBy;
+
+    public Product(UUID id, String name, Category category, Account createdBy, Account updatedBy) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
+    }
 
     public ProductResponse toResponse() {
         if (updatedBy == null)

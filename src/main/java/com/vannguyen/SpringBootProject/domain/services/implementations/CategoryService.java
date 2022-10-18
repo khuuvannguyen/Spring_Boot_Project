@@ -22,15 +22,14 @@ public class CategoryService implements ICategoryService {
     @Autowired
     CategoryRepository repo;
 
-    private List<CategoryResponse> toList(List<Category> list) {
-        List<CategoryResponse> result = new ArrayList<>();
-        list.forEach(i -> result.add(i.toResponse()));
-        return result;
-    }
-
     @Override
     public List<CategoryResponse> get() {
-        return toList(repo.findAll());
+        List<Category> all = repo.findAll();
+        if (all == null)
+            return new ArrayList<>();
+        List<CategoryResponse> result = new ArrayList<>();
+        all.forEach(i -> result.add(i.toResponse()));
+        return result;
     }
 
     @Override

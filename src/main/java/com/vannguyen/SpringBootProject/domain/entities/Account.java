@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vannguyen.SpringBootProject.application.requests.AccountRequest;
 import com.vannguyen.SpringBootProject.application.responses.AccountResponse;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "tbl_account")
 public class Account {
@@ -33,6 +35,13 @@ public class Account {
     @JsonIgnore
     @OneToMany(mappedBy = "updatedBy", cascade = CascadeType.PERSIST)
     private Set<Product> updatedProducts;
+
+    public Account(UUID id, String username, String password, String roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
 
     public void update(AccountRequest request) {
         password = request.getPassword();

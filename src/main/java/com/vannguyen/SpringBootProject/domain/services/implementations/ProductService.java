@@ -32,15 +32,14 @@ public class ProductService implements IProductService {
     @Autowired
     AccountRepository _repoAccount;
 
-    private List<ProductResponse> toList(List<Product> list) {
-        List<ProductResponse> result = new ArrayList<>();
-        list.forEach(i -> result.add(i.toResponse()));
-        return result;
-    }
-
     @Override
     public List<ProductResponse> get() {
-        return toList(_repoProduct.findAll());
+        List<Product> all = _repoProduct.findAll();
+        if (all == null)
+            return new ArrayList<>();
+        List<ProductResponse> result = new ArrayList<>();
+        all.forEach(i -> result.add(i.toResponse()));
+        return result;
     }
 
     @Override

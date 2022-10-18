@@ -26,16 +26,14 @@ public class AccountService implements IAccountService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private List<AccountResponse> toList(List<Account> list) {
-        List<AccountResponse> result = new ArrayList<>();
-        list.forEach(i -> result.add(i.toResponse()));
-        return result;
-    }
-
     @Override
     public List<AccountResponse> get() {
         List<Account> list = _accountRepository.findAll();
-        return this.toList(list);
+        if (list == null)
+            return new ArrayList<>();
+        List<AccountResponse> result = new ArrayList<>();
+        list.forEach(i -> result.add(i.toResponse()));
+        return result;
     }
 
     @Override
@@ -43,7 +41,7 @@ public class AccountService implements IAccountService {
         Account entity = _accountRepository.findByUsername(username);
         if (entity != null)
             return entity.toResponse();
-        return null;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found username: " + username);
     }
 
     @Override
