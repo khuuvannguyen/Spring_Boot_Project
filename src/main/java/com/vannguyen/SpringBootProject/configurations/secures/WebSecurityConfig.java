@@ -1,4 +1,4 @@
-package com.vannguyen.SpringBootProject.application.secures;
+package com.vannguyen.SpringBootProject.configurations.secures;
 
 import com.vannguyen.SpringBootProject.domain.constants.Permission;
 import org.springframework.context.annotation.Bean;
