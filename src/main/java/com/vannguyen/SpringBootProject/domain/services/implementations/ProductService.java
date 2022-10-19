@@ -14,10 +14,8 @@ import com.vannguyen.SpringBootProject.domain.services.interfaces.IProductServic
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +71,7 @@ public class ProductService implements IProductService {
     public ProductResponse update(UUID id, ProductRequest request) {
         Optional<Product> productResult = _repoProduct.findById(id);
         if (!productResult.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found product for id: " + id);
+            throw new ResourceNotFoundException("Not found product for id: " + id);
         validates(request.getCategory(), request.getUpdatedBy());
         Product product = productResult.get();
         Category category = _repoCategory.findById(request.getCategory()).get();
