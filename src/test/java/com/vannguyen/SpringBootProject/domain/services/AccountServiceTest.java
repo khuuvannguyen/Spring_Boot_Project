@@ -1,6 +1,8 @@
 package com.vannguyen.SpringBootProject.domain.services;
 
 import com.vannguyen.SpringBootProject.application.responses.AccountResponse;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ResourceExistingException;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ResourceNotFoundException;
 import com.vannguyen.SpringBootProject.domain.repositories.AccountRepository;
 import com.vannguyen.SpringBootProject.domain.services.implementations.AccountService;
 import com.vannguyen.SpringBootProject.fakeDatas.fakeData;
@@ -80,8 +82,8 @@ public class AccountServiceTest {
 
         Assertions.assertThatThrownBy(() -> {
             _mockService.get(this.ADMIN);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found username: " + this.ADMIN);
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Not found username: " + this.ADMIN);
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -106,8 +108,8 @@ public class AccountServiceTest {
 
         Assertions.assertThatThrownBy(() -> {
             _mockService.create(fakeData.getAccountRequest(this.ADMIN));
-            throw new ResponseStatusException(HttpStatus.CONFLICT, this.ADMIN + " is existing");
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceExistingException(this.ADMIN + " is existing");
+        }).isInstanceOf(ResourceExistingException.class);
     }
 
     @Test
@@ -131,8 +133,8 @@ public class AccountServiceTest {
 
         Assertions.assertThatThrownBy(() -> {
             _mockService.update(ArgumentMatchers.any(), fakeData.getAccountRequest(this.ADMIN));
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Account not found");
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -152,7 +154,7 @@ public class AccountServiceTest {
 
         Assertions.assertThatThrownBy(() -> {
             _mockService.delete(ArgumentMatchers.any());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Account not found");
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 }

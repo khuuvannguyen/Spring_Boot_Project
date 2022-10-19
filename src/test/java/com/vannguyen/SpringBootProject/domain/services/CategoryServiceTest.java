@@ -1,6 +1,7 @@
 package com.vannguyen.SpringBootProject.domain.services;
 
 import com.vannguyen.SpringBootProject.application.responses.CategoryResponse;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ResourceNotFoundException;
 import com.vannguyen.SpringBootProject.domain.repositories.CategoryRepository;
 import com.vannguyen.SpringBootProject.domain.services.implementations.CategoryService;
 import com.vannguyen.SpringBootProject.fakeDatas.fakeData;
@@ -81,9 +82,8 @@ public class CategoryServiceTest {
         Assertions.assertThatThrownBy(() -> {
             UUID id = UUID.randomUUID();
             _serviceMock.get(id);
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Not found category with id: " + id);
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Not found category with id: " + id);
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -119,8 +119,8 @@ public class CategoryServiceTest {
         Assertions.assertThatThrownBy(() -> {
             UUID id = UUID.randomUUID();
             _serviceMock.update(id, fakeData.getCategoryRequest(this.CATEGORY_1));
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found category with id: " + id);
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Not found category with id: " + id);
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class CategoryServiceTest {
         Assertions.assertThatThrownBy(() -> {
             UUID id = UUID.randomUUID();
             _serviceMock.delete(id);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found category with id: " + id);
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Not found category with id: " + id);
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 }

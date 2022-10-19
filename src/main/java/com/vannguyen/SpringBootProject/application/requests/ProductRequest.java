@@ -10,11 +10,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductRequest {
-    private String name;
+    private String name = "";
 
-    private UUID category;
+    private UUID category = null;
 
-    private UUID createdBy;
+    private UUID createdBy = null;
 
-    private UUID updatedBy;
+    private UUID updatedBy = null;
 }

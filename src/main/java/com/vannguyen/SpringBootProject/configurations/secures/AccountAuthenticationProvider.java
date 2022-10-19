@@ -1,4 +1,4 @@
-package com.vannguyen.SpringBootProject.application.secures;
+package com.vannguyen.SpringBootProject.configurations.secures;
 
 import com.vannguyen.SpringBootProject.domain.entities.Account;
 import com.vannguyen.SpringBootProject.domain.repositories.AccountRepository;

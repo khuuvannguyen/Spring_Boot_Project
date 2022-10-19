@@ -1,7 +1,9 @@
 package com.vannguyen.SpringBootProject.domain.services.implementations;
 
+import com.vannguyen.SpringBootProject.application.controllers.ProductController;
 import com.vannguyen.SpringBootProject.application.requests.ProductRequest;
 import com.vannguyen.SpringBootProject.application.responses.ProductResponse;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ResourceNotFoundException;
 import com.vannguyen.SpringBootProject.domain.entities.Account;
 import com.vannguyen.SpringBootProject.domain.entities.Category;
 import com.vannguyen.SpringBootProject.domain.entities.Product;
@@ -9,6 +11,8 @@ import com.vannguyen.SpringBootProject.domain.repositories.AccountRepository;
 import com.vannguyen.SpringBootProject.domain.repositories.CategoryRepository;
 import com.vannguyen.SpringBootProject.domain.repositories.ProductRepository;
 import com.vannguyen.SpringBootProject.domain.services.interfaces.IProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,22 +36,24 @@ public class ProductService implements IProductService {
     @Autowired
     AccountRepository _repoAccount;
 
+    static Logger logger = LoggerFactory.getLogger(ProductController.class);
+
     @Override
     public List<ProductResponse> get() {
-        List<Product> all = _repoProduct.findAll();
-        if (all == null)
+        List<Product> list = _repoProduct.findAll();
+        if (list.isEmpty())
             return new ArrayList<>();
         List<ProductResponse> result = new ArrayList<>();
-        all.forEach(i -> result.add(i.toResponse()));
+        list.forEach(i -> result.add(i.toResponse()));
         return result;
     }
 
     @Override
     public ProductResponse get(UUID id) {
         Optional<Product> result = _repoProduct.findById(id);
-        if (result.isPresent())
-            return result.get().toResponse();
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found product for id: " + id);
+        return result.orElseThrow(() ->
+                new ResourceNotFoundException("Not found product for id: " + id)
+        ).toResponse();
     }
 
     @Override
@@ -56,7 +62,6 @@ public class ProductService implements IProductService {
         Product product = new Product();
         Category category = _repoCategory.findById(request.getCategory()).get();
         Account createdBy = _repoAccount.findById(request.getCreatedBy()).get();
-
         product.setName(request.getName());
         product.setCategory(category);
         product.setCreatedBy(createdBy);
@@ -84,23 +89,23 @@ public class ProductService implements IProductService {
     public void delete(UUID id) {
         Optional<Product> product = _repoProduct.findById(id);
         if (!product.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found product for id: " + id);
+            throw new ResourceNotFoundException("Not found product for id: " + id);
         _repoProduct.deleteById(id);
     }
 
     private void validates(UUID categoryId, UUID accountId) {
         Optional<Category> categoryResult = _repoCategory.findById(categoryId);
         if (!categoryResult.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+            throw new ResourceNotFoundException("Category not found");
         Optional<Account> accountResult = _repoAccount.findById(accountId);
         if (!accountResult.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
+            throw new ResourceNotFoundException("Account not found");
     }
 
     private void validates(UUID categoryId, UUID createdId, UUID updatedId) {
         validates(categoryId, createdId);
         Optional<Account> accountResult = _repoAccount.findById(createdId);
         if (!accountResult.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
+            throw new ResourceNotFoundException("Account not found");
     }
 }

@@ -2,6 +2,7 @@ package com.vannguyen.SpringBootProject.domain.services;
 
 import com.vannguyen.SpringBootProject.application.requests.ProductRequest;
 import com.vannguyen.SpringBootProject.application.responses.ProductResponse;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ResourceNotFoundException;
 import com.vannguyen.SpringBootProject.domain.entities.Account;
 import com.vannguyen.SpringBootProject.domain.entities.Category;
 import com.vannguyen.SpringBootProject.domain.entities.Product;
@@ -22,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -83,7 +85,7 @@ public class ProductServiceTest {
     @Test
     public void get_returnEmptyList() {
         given(_repoProduct.findAll())
-                .willReturn(null);
+                .willReturn(new ArrayList<>());
 
         List<ProductResponse> responses = _service.get();
 
@@ -107,9 +109,8 @@ public class ProductServiceTest {
         Assertions.assertThatThrownBy(() -> {
             UUID id = UUID.randomUUID();
             _service.get(id);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "Not found product for id: " + id);
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Not found product for id: " + id);
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -135,8 +136,8 @@ public class ProductServiceTest {
 
         Assertions.assertThatThrownBy(() -> {
             _service.create(this.REQUEST);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Category not found");
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -146,8 +147,8 @@ public class ProductServiceTest {
 
         Assertions.assertThatThrownBy(() -> {
             _service.create(this.REQUEST);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Account not found");
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -184,8 +185,8 @@ public class ProductServiceTest {
         Assertions.assertThatThrownBy(() -> {
             UUID id = UUID.randomUUID();
             _service.update(id, fakeData.getProductRequest(this.PRODUCT_2));
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Category not found");
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -197,8 +198,8 @@ public class ProductServiceTest {
         Assertions.assertThatThrownBy(() -> {
             UUID id = UUID.randomUUID();
             _service.update(id, fakeData.getProductRequest(this.PRODUCT_2));
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Account not found");
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -217,8 +218,8 @@ public class ProductServiceTest {
         Assertions.assertThatThrownBy(() -> {
             UUID id = UUID.randomUUID();
             _service.delete(id);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found product for id: " + id);
-        }).isInstanceOf(ResponseStatusException.class);
+            throw new ResourceNotFoundException("Not found product for id: " + id);
+        }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     private void saveProduct(String productName) {
