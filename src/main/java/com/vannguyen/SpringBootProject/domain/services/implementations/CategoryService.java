@@ -30,11 +30,11 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public List<CategoryResponse> get() {
-        List<Category> list = repo.findAll();
-        if (list.isEmpty())
+        List<Category> all = repo.findAll();
+        if (all == null)
             return new ArrayList<>();
         List<CategoryResponse> result = new ArrayList<>();
-        list.forEach(i -> result.add(i.toResponse()));
+        all.forEach(i -> result.add(i.toResponse()));
         return result;
     }
 
