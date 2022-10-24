@@ -4,21 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
+public class OrderResponse {
     private UUID id;
-
-    private String name;
-
-    private Long price;
-
-    private CategoryResponse category;
-
-    private AccountResponse createdBy;
-
-    private AccountResponse updatedBy;
+    private Date datetime;
+    private Long totalPrice;
+    private Set<OrderDetailResponse> orderDetails;
 }

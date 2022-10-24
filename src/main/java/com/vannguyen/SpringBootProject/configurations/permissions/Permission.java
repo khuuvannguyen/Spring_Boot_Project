@@ -1,20 +1,20 @@
-package com.vannguyen.SpringBootProject.domain.constants;
+package com.vannguyen.SpringBootProject.configurations.permissions;
 
 public class Permission {
-    public static final String[] NONE_PATTERNS = {
-            "/", "/home",
+    public static final String[] NONE_PERMISSIONS = {
+            "/",
     };
-    public static final String[] READ_PATTERNS = {
+    public static final String[] READ_PERMISSIONS = {
             "/account", "/account/**",
             "/category", "/category/**",
             "/product", "/product/**",
     };
-    public static final String[] WRITE_PATTERNS = {
+    public static final String[] WRITE_PERMISSIONS = {
             "/account", "/account/**",
             "/category", "/category/**",
             "/product", "/product/**",
     };
-    public static final String[] EXECUTE_PATTERNS = {
+    public static final String[] EXECUTE_PERMISSIONS = {
 
     };
 

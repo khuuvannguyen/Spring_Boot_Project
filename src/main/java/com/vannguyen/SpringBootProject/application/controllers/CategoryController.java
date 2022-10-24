@@ -29,7 +29,7 @@ public class CategoryController {
         return service.get();
     }
 
-    @GetMapping(params = "id")
+    @GetMapping(value = "/{id}")
     public CategoryResponse get(String id) {
         validator.validate(id);
         return service.get(UUID.fromString(id));
@@ -41,13 +41,13 @@ public class CategoryController {
         return service.create(request);
     }
 
-    @PutMapping(params = "id")
+    @PutMapping(value = "/{id}")
     public CategoryResponse update(String id, @RequestBody CategoryRequest request) {
         validator.validate(id, request);
         return service.update(UUID.fromString(id), request);
     }
 
-    @DeleteMapping(params = "id")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(String id) {
         validator.validate(id);
         service.delete(UUID.fromString(id));

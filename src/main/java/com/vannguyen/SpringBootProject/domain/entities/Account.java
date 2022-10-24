@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_account")
-public class Account {
+public class Account implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", columnDefinition = "varbinary(16)")

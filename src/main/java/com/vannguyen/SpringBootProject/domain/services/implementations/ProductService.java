@@ -63,6 +63,7 @@ public class ProductService implements IProductService {
         product.setName(request.getName());
         product.setCategory(category);
         product.setCreatedBy(createdBy);
+        product.setPrice(request.getPrice());
         Product save = _repoProduct.save(product);
         return save.toResponse();
     }
@@ -79,6 +80,7 @@ public class ProductService implements IProductService {
         product.setName(request.getName());
         product.setCategory(category);
         product.setUpdatedBy(updatedBy);
+        product.setPrice(request.getPrice());
         Product save = _repoProduct.save(product);
         return save.toResponse();
     }

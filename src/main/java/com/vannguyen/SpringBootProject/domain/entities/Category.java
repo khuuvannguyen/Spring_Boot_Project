@@ -6,6 +6,7 @@ import com.vannguyen.SpringBootProject.application.responses.CategoryResponse;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_category")
-public class Category {
+public class Category implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", columnDefinition = "varbinary(16)")

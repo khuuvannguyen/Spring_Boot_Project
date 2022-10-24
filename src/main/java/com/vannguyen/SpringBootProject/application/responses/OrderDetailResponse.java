@@ -9,16 +9,10 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
+public class OrderDetailResponse {
     private UUID id;
-
-    private String name;
-
+    private ProductResponse product;
     private Long price;
-
-    private CategoryResponse category;
-
-    private AccountResponse createdBy;
-
-    private AccountResponse updatedBy;
+    private int quantity;
+    private Long total;
 }

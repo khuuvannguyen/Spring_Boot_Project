@@ -1,5 +1,6 @@
 package com.vannguyen.SpringBootProject.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vannguyen.SpringBootProject.application.responses.ProductResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -15,13 +18,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_product")
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", columnDefinition = "varbinary(16)")
     private UUID id;
 
     private String name;
+
+    private Long price;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "categoryId")
@@ -36,6 +41,10 @@ public class Product {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Account updatedBy;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
+    private Set<OrderDetail> orderDetails;
+
     public Product(UUID id, String name, Category category, Account createdBy, Account updatedBy) {
         this.id = id;
         this.name = name;
@@ -46,7 +55,7 @@ public class Product {
 
     public ProductResponse toResponse() {
         if (updatedBy == null)
-            return new ProductResponse(id, name, category.toResponse(), createdBy.toResponse(), null);
-        return new ProductResponse(id, name, category.toResponse(), createdBy.toResponse(), updatedBy.toResponse());
+            return new ProductResponse(id, name, price, category.toResponse(), createdBy.toResponse(), null);
+        return new ProductResponse(id, name, price, category.toResponse(), createdBy.toResponse(), updatedBy.toResponse());
     }
 }

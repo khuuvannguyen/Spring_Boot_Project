@@ -9,14 +9,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductRequest {
-    private String name = "";
-
-    private Long price = 0L;
-
-    private UUID category = null;
-
-    private UUID createdBy = null;
-
-    private UUID updatedBy = null;
+public class OrderDetailRequest {
+    private UUID product = null;
+    private int quantity = 0;
 }
