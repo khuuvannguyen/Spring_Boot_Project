@@ -30,8 +30,17 @@ public class Order implements Serializable {
     private Long totalPrice;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private Set<OrderDetail> orderDetails;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderDetail> orderDetails = null;
+
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
+        if (this.orderDetails == null)
+            this.orderDetails = orderDetails;
+        else {
+            this.orderDetails.retainAll(orderDetails);
+            this.orderDetails.addAll(orderDetails);
+        }
+    }
 
     public OrderResponse toResponse() {
         return new OrderResponse(id, datetime, totalPrice, toDetailResponseSet());

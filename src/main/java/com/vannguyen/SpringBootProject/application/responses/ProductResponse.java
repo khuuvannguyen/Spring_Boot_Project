@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
 public class ProductResponse {
     private UUID id;
 

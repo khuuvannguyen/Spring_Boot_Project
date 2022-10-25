@@ -1,4 +1,4 @@
-package com.vannguyen.SpringBootProject.configurations.permissions;
+package com.vannguyen.SpringBootProject.configurations.constants;
 
 public class Permission {
     public static final String[] NONE_PERMISSIONS = {

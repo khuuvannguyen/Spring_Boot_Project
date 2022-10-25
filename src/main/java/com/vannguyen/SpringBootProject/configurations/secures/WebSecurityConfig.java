@@ -1,6 +1,6 @@
 package com.vannguyen.SpringBootProject.configurations.secures;
 
-import com.vannguyen.SpringBootProject.configurations.permissions.Permission;
+import com.vannguyen.SpringBootProject.configurations.constants.Permission;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

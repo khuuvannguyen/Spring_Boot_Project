@@ -3,7 +3,6 @@ package com.vannguyen.SpringBootProject.domain.services.implementations;
 import com.vannguyen.SpringBootProject.application.requests.OrderDetailRequest;
 import com.vannguyen.SpringBootProject.application.requests.OrderRequest;
 import com.vannguyen.SpringBootProject.application.responses.OrderResponse;
-import com.vannguyen.SpringBootProject.application.responses.ProductResponse;
 import com.vannguyen.SpringBootProject.configurations.exceptions.ResourceNotFoundException;
 import com.vannguyen.SpringBootProject.domain.entities.Order;
 import com.vannguyen.SpringBootProject.domain.entities.OrderDetail;
@@ -42,7 +41,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public OrderResponse get(UUID id) {
-        return null;
+        return _repoOrder.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Order not found for id: " + id)
+        ).toResponse();
     }
 
     @Transactional
@@ -101,16 +102,8 @@ public class OrderService implements IOrderService {
         }
 
         orderEntity.setOrderDetails(Set.copyOf(orderDetailEntityList));
-        Order save = null;
-        try {
-            Order order1 = _repoOrder.findById(orderId).get();
-            List<OrderDetail> byOrderId3 = _repoOrderDetail.findByOrderId(orderId);
-//            save = _repoOrder.save(orderEntity);    // java.lang.UnsupportedOperationException
-//            _repoOrderDetail.saveAll(orderDetailEntityList);    // java.lang.UnsupportedOperationException
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        Order save = _repoOrder.save(orderEntity);
+        return save.toResponse();
     }
 
     @Transactional
@@ -122,7 +115,12 @@ public class OrderService implements IOrderService {
     @Transactional
     @Override
     public void delete(UUID id) {
-
+        Optional<Order> order = _repoOrder.findById(id);
+        if (!order.isPresent()) {
+            throw new ResourceNotFoundException("Order not found for id: " + id);
+        }
+        _repoOrderDetail.deleteByOrderId(id);
+        _repoOrder.deleteById(id);
     }
 
     private HashMap<String, Long> calculatePrice(List<Product> products, List<OrderDetailRequest> productsRequest) {
@@ -142,7 +140,7 @@ public class OrderService implements IOrderService {
     }
 
     @Transactional
-    private void deleteDetailByOrder(Order order){
+    private void deleteDetailByOrder(Order order) {
         List<UUID> collect = order.getOrderDetails()
                 .stream().map(OrderDetail::getId)
                 .collect(Collectors.toList());

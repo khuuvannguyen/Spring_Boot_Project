@@ -25,7 +25,7 @@ public class OrderDetail implements Serializable {
     @JoinColumn(name = "productId")
     private Product product;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderId")
     private Order order;
 
