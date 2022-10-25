@@ -3,8 +3,11 @@ package com.vannguyen.SpringBootProject.application.controllers;
 import com.vannguyen.SpringBootProject.application.requests.CategoryRequest;
 import com.vannguyen.SpringBootProject.application.responses.CategoryResponse;
 import com.vannguyen.SpringBootProject.application.validators.CategoryValidator;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ErrorDetail;
 import com.vannguyen.SpringBootProject.domain.services.interfaces.ICategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
@@ -31,8 +34,10 @@ public class CategoryController {
     @Operation(summary = "Get all Category", description = "Return all Categories in database", tags = "Category")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             })
     @GetMapping(produces = {
             MediaType.APPLICATION_JSON_VALUE,
@@ -45,10 +50,14 @@ public class CategoryController {
     @Operation(summary = "Get Category by id", description = "Return a single Category", tags = "Category")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             })
     @GetMapping(value = "/{id}",
             produces = {
@@ -63,10 +72,14 @@ public class CategoryController {
     @Operation(summary = "Add new Category", description = "", tags = "Category")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "409"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "201",
+                            content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             })
     @PostMapping(
             consumes = {
@@ -85,11 +98,16 @@ public class CategoryController {
     @Operation(summary = "Update an existing Category", description = "", tags = "Category")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "409"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             })
     @PutMapping(value = "/{id}",
             consumes = {
@@ -108,9 +126,12 @@ public class CategoryController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @DeleteMapping(value = "/{id}",

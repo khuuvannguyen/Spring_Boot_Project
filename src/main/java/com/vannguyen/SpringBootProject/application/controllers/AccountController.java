@@ -4,8 +4,11 @@ import com.vannguyen.SpringBootProject.application.requests.AccountRequest;
 import com.vannguyen.SpringBootProject.application.responses.AccountResponse;
 import com.vannguyen.SpringBootProject.application.validators.AccountValidator;
 import com.vannguyen.SpringBootProject.application.validators.Validator;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ErrorDetail;
 import com.vannguyen.SpringBootProject.domain.services.interfaces.IAccountService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
@@ -33,8 +36,10 @@ public class AccountController {
     @Operation(summary = "Get all Account in database", tags = "Account")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = AccountResponse.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             })
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<AccountResponse> get() {
@@ -44,10 +49,14 @@ public class AccountController {
     @Operation(summary = "Get a single Account by username", tags = "Account")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = AccountResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             })
     @GetMapping(value = "/{username}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public AccountResponse get(String username) {
@@ -57,10 +66,14 @@ public class AccountController {
     @Operation(summary = "Create a new Account", tags = "Account")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "409"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = AccountResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             })
     @PostMapping(
             consumes = {
@@ -79,11 +92,16 @@ public class AccountController {
     @Operation(summary = "Update an existing Account", tags = "Account")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "409"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = AccountResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @PutMapping(value = "/{id}",
@@ -104,9 +122,12 @@ public class AccountController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500"),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
             }
     )
     @DeleteMapping(value = "/{id}",

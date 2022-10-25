@@ -14,7 +14,7 @@ public class OrderValidator extends Validator {
             validate(detail.getProduct().toString());
             if (detail.getQuantity() <= 0)
                 throw new BadRequestException("Quantity must be greater than 0");
-            if (detail.getQuantity() != (int)detail.getQuantity()) {
+            if (detail.getQuantity() != (int) detail.getQuantity()) {
                 throw new BadRequestException("Quantity must be decimal");
             }
         }
@@ -26,7 +26,10 @@ public class OrderValidator extends Validator {
     }
 
     public void validate(String id1, String id2, OrderRequest request) {
-        validate(id1, request);
+        validate(id1);
         validate(id2);
+        validate(request);
+        if (request.getOrderDetails().size() > 1)
+            throw new BadRequestException("This endpoint is using for update one Product in Order");
     }
 }

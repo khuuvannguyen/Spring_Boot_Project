@@ -3,8 +3,11 @@ package com.vannguyen.SpringBootProject.application.controllers;
 import com.vannguyen.SpringBootProject.application.requests.OrderRequest;
 import com.vannguyen.SpringBootProject.application.responses.OrderResponse;
 import com.vannguyen.SpringBootProject.application.validators.OrderValidator;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ErrorDetail;
 import com.vannguyen.SpringBootProject.domain.services.interfaces.IOrderService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
@@ -31,8 +34,10 @@ public class OrderController {
     @Operation(summary = "Get all Order from database", tags = "Order")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @GetMapping(
@@ -48,10 +53,14 @@ public class OrderController {
     @Operation(summary = "Get Order by Id", tags = "Order")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @GetMapping(value = "/{id}",
@@ -67,10 +76,14 @@ public class OrderController {
     @Operation(summary = "Create a new Order", tags = "Order")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "409"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "201",
+                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @PostMapping(
@@ -91,10 +104,14 @@ public class OrderController {
     @Operation(summary = "Update an existing Order", tags = "Order")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @PutMapping(value = "/{orderId}",
@@ -114,10 +131,14 @@ public class OrderController {
     @Operation(summary = "Update an existing Order", tags = "Order")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @PutMapping(value = "/{orderId}/{detailId}",
@@ -129,18 +150,21 @@ public class OrderController {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public void update(String orderId, String detailId, @RequestBody OrderRequest request) {
+    public OrderResponse update(String orderId, String detailId, @RequestBody OrderRequest request) {
         validator.validate(orderId, detailId, request);
-        _service.update(UUID.fromString(orderId), UUID.fromString(detailId), request);
+        return _service.update(UUID.fromString(orderId), UUID.fromString(detailId), request);
     }
 
     @Operation(summary = "Delete an existing Order", tags = "Order")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @DeleteMapping(value = "/{id}",
@@ -148,8 +172,9 @@ public class OrderController {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE
             })
-    public void delete(String id) {
+    public ResponseEntity delete(String id) {
         validator.validate(id);
         _service.delete(UUID.fromString(id));
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

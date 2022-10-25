@@ -3,8 +3,11 @@ package com.vannguyen.SpringBootProject.application.controllers;
 import com.vannguyen.SpringBootProject.application.requests.ProductRequest;
 import com.vannguyen.SpringBootProject.application.responses.ProductResponse;
 import com.vannguyen.SpringBootProject.application.validators.ProductValidator;
+import com.vannguyen.SpringBootProject.configurations.exceptions.ErrorDetail;
 import com.vannguyen.SpringBootProject.domain.services.interfaces.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
@@ -31,8 +34,10 @@ public class ProductController {
     @Operation(summary = "Get all Product from database", tags = "Product")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = ProductResponse.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @GetMapping(
@@ -48,10 +53,14 @@ public class ProductController {
     @Operation(summary = "Get Product by Id", tags = "Product")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = ProductResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @GetMapping(value = "/{id}",
@@ -67,11 +76,16 @@ public class ProductController {
     @Operation(summary = "Create a new Product", tags = "Product")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "409"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "201",
+                            content = @Content(schema = @Schema(implementation = ProductResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @PostMapping(
@@ -92,11 +106,16 @@ public class ProductController {
     @Operation(summary = "Update an existing Product", tags = "Product")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "409"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = ProductResponse.class))),
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "409",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @PutMapping(value = "/{id}",
@@ -117,9 +136,12 @@ public class ProductController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "400"),
-                    @ApiResponse(responseCode = "404"),
-                    @ApiResponse(responseCode = "500")
+                    @ApiResponse(responseCode = "400",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+                    @ApiResponse(responseCode = "500",
+                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
             }
     )
     @DeleteMapping(value = "/{id}",

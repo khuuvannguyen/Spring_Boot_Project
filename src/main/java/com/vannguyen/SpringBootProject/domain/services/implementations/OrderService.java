@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class OrderService implements IOrderService {
     @Autowired
     OrderRepository _repoOrder;
@@ -46,34 +47,29 @@ public class OrderService implements IOrderService {
         ).toResponse();
     }
 
-    @Transactional
     @Override
     public OrderResponse create(OrderRequest request) {
         Order orderEntity = new Order();
-        List<UUID> productListId = new ArrayList<>();
-        request.getOrderDetails().forEach(i -> productListId.add(i.getProduct()));
+        List<UUID> productListId = request.getOrderDetails()
+                .stream().map(OrderDetailRequest::getProduct).collect(Collectors.toList());
         List<Product> products = _repoProduct.findByIdIn(productListId);
 
         HashMap<String, Long> quantityMap = calculatePrice(products, request.getOrderDetails());
         orderEntity.setTotalPrice(quantityMap.get("total"));
-        List<OrderDetail> orderDetailEntityList = new ArrayList<>();
-        for (Product product : products) {
-            orderDetailEntityList.add(
-                    new OrderDetail(
-                            product,
-                            orderEntity,
-                            product.getPrice(),
-                            Math.toIntExact(quantityMap.get(product.getId().toString()))
-                    )
-            );
-        }
+        List<OrderDetail> orderDetailEntityList = products.stream().map(product ->
+                new OrderDetail(
+                        product,
+                        orderEntity,
+                        product.getPrice(),
+                        Math.toIntExact(quantityMap.get(product.getId().toString()))
+                )
+        ).collect(Collectors.toList());
 
         orderEntity.setOrderDetails(Set.copyOf(orderDetailEntityList));
         Order save = _repoOrder.save(orderEntity);
         return save.toResponse();
     }
 
-    @Transactional
     @Override
     public OrderResponse update(UUID orderId, OrderRequest request) {
         Order orderEntity = _repoOrder.findById(orderId)
@@ -83,36 +79,59 @@ public class OrderService implements IOrderService {
 
         this.deleteDetailByOrder(orderEntity);
 
-        List<UUID> productListId = new ArrayList<>();
-        request.getOrderDetails().forEach(i -> productListId.add(i.getProduct()));
+        List<UUID> productListId = request.getOrderDetails()
+                .stream().map(OrderDetailRequest::getProduct).collect(Collectors.toList());
         List<Product> products = _repoProduct.findByIdIn(productListId);
 
         HashMap<String, Long> quantityMap = calculatePrice(products, request.getOrderDetails());
         orderEntity.setTotalPrice(quantityMap.get("total"));
-        List<OrderDetail> orderDetailEntityList = new ArrayList<>();
-        for (Product product : products) {
-            orderDetailEntityList.add(
-                    new OrderDetail(
-                            product,
-                            orderEntity,
-                            product.getPrice(),
-                            Math.toIntExact(quantityMap.get(product.getId().toString()))
-                    )
-            );
-        }
+        List<OrderDetail> orderDetailEntityList = products.stream().map(product ->
+                new OrderDetail(
+                        product,
+                        orderEntity,
+                        product.getPrice(),
+                        Math.toIntExact(quantityMap.get(product.getId().toString()))
+                )
+        ).collect(Collectors.toList());
 
         orderEntity.setOrderDetails(Set.copyOf(orderDetailEntityList));
         Order save = _repoOrder.save(orderEntity);
         return save.toResponse();
     }
 
-    @Transactional
     @Override
     public OrderResponse update(UUID orderId, UUID detailId, OrderRequest request) {
-        return null;
+        Order order = _repoOrder.findById(orderId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Order not found for id: " + orderId)
+                );
+        OrderDetail orderDetail = order.getOrderDetails()
+                .stream().filter(detail -> detail.getId().equals(detailId))
+                .findFirst().orElseThrow(() ->
+                        new ResourceNotFoundException("Order Detail not found for id: " + detailId)
+                );
+
+        UUID productRequestId = request.getOrderDetails().get(0).getProduct();
+        Product newProduct = _repoProduct.findById(productRequestId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product not found for id: " + productRequestId));
+
+        order.getOrderDetails().removeIf(detail -> detail.getProduct().equals(orderDetail.getProduct()));
+
+        orderDetail.setProduct(newProduct);
+        int quantityRequest = request.getOrderDetails().get(0).getQuantity();
+        orderDetail.setQuantity(quantityRequest);
+        orderDetail.setPrice(newProduct.getPrice());
+        orderDetail.setTotal(quantityRequest * newProduct.getPrice());
+        order.addOrderDetail(orderDetail);
+
+        long totalPrice = order.getOrderDetails().stream().mapToLong(OrderDetail::getTotal).sum();
+        order.setTotalPrice(totalPrice);
+
+        Order save = _repoOrder.save(order);
+        return save.toResponse();
     }
 
-    @Transactional
     @Override
     public void delete(UUID id) {
         Optional<Order> order = _repoOrder.findById(id);

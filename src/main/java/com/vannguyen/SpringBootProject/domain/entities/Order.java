@@ -42,6 +42,10 @@ public class Order implements Serializable {
         }
     }
 
+    public void addOrderDetail(OrderDetail orderDetail){
+        this.orderDetails.add(orderDetail);
+    }
+
     public OrderResponse toResponse() {
         return new OrderResponse(id, datetime, totalPrice, toDetailResponseSet());
     }
