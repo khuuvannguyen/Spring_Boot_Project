@@ -107,9 +107,7 @@ public class ProductServiceTest {
         findEmptyProductById();
 
         Assertions.assertThatThrownBy(() -> {
-            UUID id = UUID.randomUUID();
-            _service.get(id);
-            throw new ResourceNotFoundException("Not found product for id: " + id);
+            _service.get(UUID.randomUUID());
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 

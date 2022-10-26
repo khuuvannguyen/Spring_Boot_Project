@@ -82,7 +82,6 @@ public class CategoryServiceTest {
         Assertions.assertThatThrownBy(() -> {
             UUID id = UUID.randomUUID();
             _serviceMock.get(id);
-            throw new ResourceNotFoundException("Not found category with id: " + id);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -117,9 +116,7 @@ public class CategoryServiceTest {
                 .willReturn(Optional.empty());
 
         Assertions.assertThatThrownBy(() -> {
-            UUID id = UUID.randomUUID();
-            _serviceMock.update(id, fakeData.getCategoryRequest(this.CATEGORY_1));
-            throw new ResourceNotFoundException("Not found category with id: " + id);
+            _serviceMock.update(UUID.randomUUID(), fakeData.getCategoryRequest(this.CATEGORY_1));
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -139,9 +136,7 @@ public class CategoryServiceTest {
                 .willReturn(Optional.empty());
 
         Assertions.assertThatThrownBy(() -> {
-            UUID id = UUID.randomUUID();
-            _serviceMock.delete(id);
-            throw new ResourceNotFoundException("Not found category with id: " + id);
+            _serviceMock.delete(UUID.randomUUID());
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 }

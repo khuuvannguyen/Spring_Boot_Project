@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -70,7 +71,7 @@ public class AccountServiceTest {
         given(_mockRepo.findByUsername(ArgumentMatchers.any()))
                 .willReturn(fakeData.getAccount(this.ADMIN));
 
-        AccountResponse response = _mockService.get(ArgumentMatchers.any());
+        AccountResponse response = _mockService.get(this.ADMIN);
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getUsername()).isEqualTo(this.ADMIN);
@@ -82,7 +83,6 @@ public class AccountServiceTest {
 
         Assertions.assertThatThrownBy(() -> {
             _mockService.get(this.ADMIN);
-            throw new ResourceNotFoundException("Not found username: " + this.ADMIN);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -108,7 +108,6 @@ public class AccountServiceTest {
 
         Assertions.assertThatThrownBy(() -> {
             _mockService.create(fakeData.getAccountRequest(this.ADMIN));
-            throw new ResourceExistingException(this.ADMIN + " is existing");
         }).isInstanceOf(ResourceExistingException.class);
     }
 
@@ -119,7 +118,7 @@ public class AccountServiceTest {
         given(_mockRepo.save(ArgumentMatchers.any()))
                 .willReturn(fakeData.getAccount(this.ADMIN));
 
-        AccountResponse response = _mockService.update(ArgumentMatchers.any(), fakeData.getAccountRequest(this.ADMIN));
+        AccountResponse response = _mockService.update(UUID.randomUUID(), fakeData.getAccountRequest(this.ADMIN));
 
         verify(_mockRepo, times(1)).save(ArgumentMatchers.any());
         Assertions.assertThat(response).isNotNull();
@@ -132,8 +131,7 @@ public class AccountServiceTest {
                 .willReturn(Optional.empty());
 
         Assertions.assertThatThrownBy(() -> {
-            _mockService.update(ArgumentMatchers.any(), fakeData.getAccountRequest(this.ADMIN));
-            throw new ResourceNotFoundException("Account not found");
+            _mockService.update(UUID.randomUUID(), fakeData.getAccountRequest(this.ADMIN));
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -142,7 +140,7 @@ public class AccountServiceTest {
         given(_mockRepo.findById(ArgumentMatchers.any()))
                 .willReturn(Optional.of(fakeData.getAccount(this.ADMIN)));
 
-        _mockService.delete(ArgumentMatchers.any());
+        _mockService.delete(UUID.randomUUID());
 
         verify(_mockRepo, times(1)).deleteById(ArgumentMatchers.any());
     }
@@ -153,8 +151,7 @@ public class AccountServiceTest {
                 .willReturn(Optional.empty());
 
         Assertions.assertThatThrownBy(() -> {
-            _mockService.delete(ArgumentMatchers.any());
-            throw new ResourceNotFoundException("Account not found");
+            _mockService.delete(UUID.randomUUID());
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 }
