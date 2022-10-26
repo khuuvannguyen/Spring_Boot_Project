@@ -52,7 +52,7 @@ public class OrderService implements IOrderService {
         Order orderEntity = new Order();
         List<UUID> productListId = request.getOrderDetails()
                 .stream().map(OrderDetailRequest::getProduct).collect(Collectors.toList());
-        List<Product> products = _repoProduct.findByIdIn(productListId);
+        List<Product> products = getProductsByIds(productListId);
 
         HashMap<String, Long> quantityMap = calculatePrice(products, request.getOrderDetails());
         orderEntity.setTotalPrice(quantityMap.get("total"));
@@ -65,7 +65,7 @@ public class OrderService implements IOrderService {
                 )
         ).collect(Collectors.toList());
 
-        orderEntity.setOrderDetails(Set.copyOf(orderDetailEntityList));
+        orderEntity.setOrderDetails(orderDetailEntityList);
         Order save = _repoOrder.save(orderEntity);
         return save.toResponse();
     }
@@ -81,7 +81,7 @@ public class OrderService implements IOrderService {
 
         List<UUID> productListId = request.getOrderDetails()
                 .stream().map(OrderDetailRequest::getProduct).collect(Collectors.toList());
-        List<Product> products = _repoProduct.findByIdIn(productListId);
+        List<Product> products = getProductsByIds(productListId);
 
         HashMap<String, Long> quantityMap = calculatePrice(products, request.getOrderDetails());
         orderEntity.setTotalPrice(quantityMap.get("total"));
@@ -94,7 +94,7 @@ public class OrderService implements IOrderService {
                 )
         ).collect(Collectors.toList());
 
-        orderEntity.setOrderDetails(Set.copyOf(orderDetailEntityList));
+        orderEntity.setOrderDetails(orderDetailEntityList);
         Order save = _repoOrder.save(orderEntity);
         return save.toResponse();
     }
@@ -158,11 +158,21 @@ public class OrderService implements IOrderService {
         return quantityMap;
     }
 
-    @Transactional
     private void deleteDetailByOrder(Order order) {
         List<UUID> collect = order.getOrderDetails()
                 .stream().map(OrderDetail::getId)
                 .collect(Collectors.toList());
         _repoOrderDetail.deleteAllById(collect);
+    }
+
+    private List<Product> getProductsByIds(List<UUID> ids) {
+        List<Product> products = _repoProduct.findByIdIn(ids);
+        if (products.isEmpty() || products == null)
+            throw new ResourceNotFoundException("Not found any Products");
+        for (Product product : products) {
+            if (!ids.contains(product.getId()))
+                throw new ResourceNotFoundException("Product not found for Id: " + product.getId());
+        }
+        return products;
     }
 }

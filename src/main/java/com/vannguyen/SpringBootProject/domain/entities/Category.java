@@ -3,11 +3,13 @@ package com.vannguyen.SpringBootProject.domain.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vannguyen.SpringBootProject.application.requests.CategoryRequest;
 import com.vannguyen.SpringBootProject.application.responses.CategoryResponse;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -25,7 +27,7 @@ public class Category implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
-    private Set<Product> products;
+    private List<Product> products;
 
     public Category(UUID id, String name) {
         this.id = id;

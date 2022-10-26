@@ -1,15 +1,12 @@
 package com.vannguyen.SpringBootProject.fakeDatas;
 
-import com.vannguyen.SpringBootProject.application.requests.AccountRequest;
-import com.vannguyen.SpringBootProject.application.requests.CategoryRequest;
-import com.vannguyen.SpringBootProject.application.requests.ProductRequest;
-import com.vannguyen.SpringBootProject.domain.entities.Account;
-import com.vannguyen.SpringBootProject.domain.entities.Category;
-import com.vannguyen.SpringBootProject.domain.entities.Product;
+import com.vannguyen.SpringBootProject.application.requests.*;
+import com.vannguyen.SpringBootProject.domain.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class fakeData {
     public static Account getAccount(String username) {
@@ -57,7 +54,7 @@ public class fakeData {
     }
 
     public static Product getProduct(String productName, Category category, Account createdBy, Account updatedBy) {
-        return new Product(UUID.randomUUID(), productName, category, createdBy, updatedBy);
+        return new Product(UUID.randomUUID(), productName, 1000L, category, createdBy, updatedBy);
     }
 
     public static Product getProductWithoutId(String productName, Category category, Account createdBy, Account updatedBy) {
@@ -83,5 +80,82 @@ public class fakeData {
         result.add(getProduct("Product 1", category, createdBy, updatedBy));
         result.add(getProduct("Product 2", category, createdBy, updatedBy));
         return result;
+    }
+
+    public static List<Product> getProductList(List<UUID> ids, Category category, Account createdBy, Account updatedBy) {
+        List<Product> resultList = new ArrayList<>();
+        int i = 1;
+        for (UUID id : ids) {
+            resultList.add(new Product(id, "Product " + (i++), 1000L, category, createdBy, updatedBy));
+        }
+
+        return resultList;
+    }
+
+    public static OrderDetail getOrderDetail(String productName) {
+        OrderDetail detail = new OrderDetail();
+        detail.setId(UUID.randomUUID());
+        Product product = getProduct(productName, getCategory("Category 1"),
+                getAccount("admin"), null);
+        detail.setProduct(product);
+        detail.setTotal(1000L);
+        detail.setQuantity(2);
+        detail.setPrice(500L);
+        return detail;
+    }
+
+    public static OrderDetail getOrderDetailWithoutId(String productName) {
+        OrderDetail detail = new OrderDetail();
+        Product product = getProduct(productName, getCategory("Category 1"),
+                getAccount("admin"), null);
+        detail.setProduct(product);
+        detail.setTotal(1000L);
+        detail.setQuantity(2);
+        detail.setPrice(500L);
+        return detail;
+    }
+
+    public static List<OrderDetail> getOrderDetailList() {
+        List<OrderDetail> list = new ArrayList<>();
+        list.add(getOrderDetail("Product 1"));
+        list.add(getOrderDetail("Product 2"));
+        return list;
+    }
+
+    public static OrderDetailRequest getOrderDetailRequest(UUID id) {
+        OrderDetailRequest request = new OrderDetailRequest();
+        request.setProduct(id);
+        request.setQuantity(1);
+        return request;
+    }
+
+    public static Order getOrder() {
+        Order order = new Order();
+        order.setId(UUID.randomUUID());
+        order.setOrderDetails(getOrderDetailList());
+        order.setTotalPrice(1000L);
+        return order;
+    }
+
+    public static Order getOrderWithoutId() {
+        Order order = new Order();
+        order.setOrderDetails(getOrderDetailList());
+        order.setTotalPrice(2000L);
+        return order;
+    }
+
+    public static List<Order> getOrderList() {
+        List<Order> list = new ArrayList<>();
+        list.add(getOrder());
+        list.add(getOrder());
+        return list;
+    }
+
+    public static OrderRequest getOrderRequest(List<UUID> ids) {
+        OrderRequest request = new OrderRequest();
+        List<OrderDetailRequest> detailRequestList = ids.stream()
+                .map(fakeData::getOrderDetailRequest).collect(Collectors.toList());
+        request.setOrderDetails(detailRequestList);
+        return request;
     }
 }

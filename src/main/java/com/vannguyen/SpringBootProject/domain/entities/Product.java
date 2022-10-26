@@ -10,7 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -43,11 +43,12 @@ public class Product implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
-    private Set<OrderDetail> orderDetails;
+    private List<OrderDetail> orderDetails;
 
-    public Product(UUID id, String name, Category category, Account createdBy, Account updatedBy) {
+    public Product(UUID id, String name, Long price, Category category, Account createdBy, Account updatedBy) {
         this.id = id;
         this.name = name;
+        this.price = price;
         this.category = category;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;

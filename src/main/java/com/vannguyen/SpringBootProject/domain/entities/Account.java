@@ -9,7 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -31,11 +31,11 @@ public class Account implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.PERSIST)
-    private Set<Product> createdProducts;
+    private List<Product> createdProducts;
 
     @JsonIgnore
     @OneToMany(mappedBy = "updatedBy", cascade = CascadeType.PERSIST)
-    private Set<Product> updatedProducts;
+    private List<Product> updatedProducts;
 
     public Account(UUID id, String username, String password, String roles) {
         this.id = id;
