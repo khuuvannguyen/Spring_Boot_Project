@@ -44,11 +44,6 @@ public class Account implements Serializable {
         this.roles = roles;
     }
 
-    public void update(AccountRequest request) {
-        password = request.getPassword();
-        roles = request.getRoles();
-    }
-
     public AccountResponse toResponse() {
         return new AccountResponse(id, username);
     }

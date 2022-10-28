@@ -68,7 +68,8 @@ public class AccountService implements IAccountService {
         if (!entityFromDB.isPresent())
             throw new ResourceNotFoundException("Account not found");
         Account entity = entityFromDB.get();
-        entity.update(request);
+        entity.setPassword(passwordEncoder.encode(request.getPassword()));
+        entity.setRoles(request.getRoles());
         Account saved = _accountRepository.save(entity);
         return saved.toResponse();
     }
