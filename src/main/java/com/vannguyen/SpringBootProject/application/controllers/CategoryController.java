@@ -32,13 +32,12 @@ public class CategoryController {
     static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Operation(summary = "Get all Category", description = "Return all Categories in database", tags = "Category")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @GetMapping(produces = {
             MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE
@@ -48,17 +47,16 @@ public class CategoryController {
     }
 
     @Operation(summary = "Get Category by id", description = "Return a single Category", tags = "Category")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @GetMapping(value = "/{id}",
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -70,17 +68,16 @@ public class CategoryController {
     }
 
     @Operation(summary = "Add new Category", description = "", tags = "Category")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "201",
-                            content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "409",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            })
+    @ApiResponses({
+            @ApiResponse(responseCode = "201",
+                    content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "409",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @PostMapping(
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -92,23 +89,22 @@ public class CategoryController {
             })
     public ResponseEntity<CategoryResponse> create(@RequestBody CategoryRequest request) {
         validator.validate(request);
-        return new ResponseEntity<>(service.create(request),HttpStatus.CREATED);
+        return new ResponseEntity<>(service.create(request), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update an existing Category", description = "", tags = "Category")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "409",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "409",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @PutMapping(value = "/{id}",
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE
@@ -123,22 +119,20 @@ public class CategoryController {
     }
 
     @Operation(summary = "Delete an existing Category", tags = "Category")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
-    @DeleteMapping(value = "/{id}",
-    produces = {
-            MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE
+    @ApiResponses({
+            @ApiResponse(responseCode = "204"),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
     })
+    @DeleteMapping(value = "/{id}",
+            produces = {
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE
+            })
     public ResponseEntity delete(String id) {
         validator.validate(id);
         service.delete(UUID.fromString(id));

@@ -32,14 +32,12 @@ public class OrderController {
     static Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Operation(summary = "Get all Order from database", tags = "Order")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @GetMapping(
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -51,18 +49,16 @@ public class OrderController {
     }
 
     @Operation(summary = "Get Order by Id", tags = "Order")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @GetMapping(value = "/{id}",
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -74,18 +70,16 @@ public class OrderController {
     }
 
     @Operation(summary = "Create a new Order", tags = "Order")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "201",
-                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "409",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201",
+                    content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "409",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @PostMapping(
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -102,18 +96,16 @@ public class OrderController {
     }
 
     @Operation(summary = "Update an existing Order", tags = "Order")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @PutMapping(value = "/{orderId}",
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -129,18 +121,16 @@ public class OrderController {
     }
 
     @Operation(summary = "Update an existing Order", tags = "Order")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = OrderResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = OrderResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @PutMapping(value = "/{orderId}/{detailId}",
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -156,17 +146,15 @@ public class OrderController {
     }
 
     @Operation(summary = "Delete an existing Order", tags = "Order")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204"),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @DeleteMapping(value = "/{id}",
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,

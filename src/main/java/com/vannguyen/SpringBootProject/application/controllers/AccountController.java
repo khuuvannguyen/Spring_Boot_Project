@@ -34,47 +34,44 @@ public class AccountController {
     static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Operation(summary = "Get all Account in database", tags = "Account")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = AccountResponse.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = AccountResponse.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<AccountResponse> get() {
         return _service.get();
     }
 
     @Operation(summary = "Get a single Account by username", tags = "Account")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = AccountResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = AccountResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @GetMapping(value = "/{username}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public AccountResponse get(String username) {
         return _service.get(username);
     }
 
     @Operation(summary = "Create a new Account", tags = "Account")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = AccountResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "409",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = AccountResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "409",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @PostMapping(
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -90,20 +87,18 @@ public class AccountController {
     }
 
     @Operation(summary = "Update an existing Account", tags = "Account")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = AccountResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "409",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = AccountResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "409",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @PutMapping(value = "/{id}",
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -119,17 +114,15 @@ public class AccountController {
     }
 
     @Operation(summary = "Delete an existing Account", tags = "Account")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204"),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+    })
     @DeleteMapping(value = "/{id}",
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,

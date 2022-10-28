@@ -32,37 +32,32 @@ public class ProductController {
     static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Operation(summary = "Get all Product from database", tags = "Product")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = ProductResponse.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = ProductResponse.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @GetMapping(
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE
-            }
-    )
+            })
     public List<ProductResponse> get() {
         return service.get();
     }
 
     @Operation(summary = "Get Product by Id", tags = "Product")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = ProductResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = ProductResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @GetMapping(value = "/{id}",
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -86,8 +81,7 @@ public class ProductController {
                             content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
                     @ApiResponse(responseCode = "500",
                             content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+            })
     @PostMapping(
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -96,28 +90,25 @@ public class ProductController {
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE
-            }
-    )
+            })
     public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest request) {
         validator.validate(request);
         return new ResponseEntity<>(service.create(request), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update an existing Product", tags = "Product")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = ProductResponse.class))),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "409",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = ProductResponse.class))),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "409",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @PutMapping(value = "/{id}",
             consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
@@ -133,17 +124,15 @@ public class ProductController {
     }
 
     @Operation(summary = "Delete an existing Product by Id", tags = "Product")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "204"),
-                    @ApiResponse(responseCode = "400",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "404",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
-                    @ApiResponse(responseCode = "500",
-                            content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
-            }
-    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204"),
+            @ApiResponse(responseCode = "400",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "404",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class))),
+            @ApiResponse(responseCode = "500",
+                    content = @Content(schema = @Schema(implementation = ErrorDetail.class)))
+    })
     @DeleteMapping(value = "/{id}",
             produces = {
                     MediaType.APPLICATION_JSON_VALUE,
