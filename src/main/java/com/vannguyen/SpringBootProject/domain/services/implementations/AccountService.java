@@ -26,8 +26,8 @@ public class AccountService implements IAccountService {
     @Autowired
     AccountRepository _accountRepository;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
 
     static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
@@ -56,7 +56,7 @@ public class AccountService implements IAccountService {
             throw new ResourceExistingException(request.getUsername() + " is existing");
         Account entity = new Account();
         entity.setUsername(request.getUsername());
-        entity.setPassword(passwordEncoder.encode(request.getPassword()));
+//        entity.setPassword(passwordEncoder.encode(request.getPassword()));
         entity.setRoles(request.getRoles());
         Account saved = _accountRepository.save(entity);
         return saved.toResponse();
@@ -68,7 +68,7 @@ public class AccountService implements IAccountService {
         if (!entityFromDB.isPresent())
             throw new ResourceNotFoundException("Account not found");
         Account entity = entityFromDB.get();
-        entity.setPassword(passwordEncoder.encode(request.getPassword()));
+//        entity.setPassword(passwordEncoder.encode(request.getPassword()));
         entity.setRoles(request.getRoles());
         Account saved = _accountRepository.save(entity);
         return saved.toResponse();

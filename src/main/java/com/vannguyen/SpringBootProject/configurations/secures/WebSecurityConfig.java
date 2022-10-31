@@ -6,9 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +30,10 @@ public class WebSecurityConfig {
                         .antMatchers(HttpMethod.POST, Permission.WRITE_PERMISSIONS).hasAuthority(Permission.WRITE)
                         .antMatchers(HttpMethod.DELETE, Permission.WRITE_PERMISSIONS).hasAuthority(Permission.WRITE)
                         .anyRequest().authenticated()
+                        .and().logout()
+                        .addLogoutHandler(
+                                new HeaderWriterLogoutHandler(
+                                        new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES)))
                         .and().httpBasic();
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -34,8 +42,25 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) ->
+//                web.ignoring()
+//                        .antMatchers("/api/auth/**")
+//                        .antMatchers("/v3/api-docs/**")
+//                        .antMatchers("configuration/**")
+//                        .antMatchers("/swagger*/**")
+//                        .antMatchers("/webjars/**")
+//                        .antMatchers("/swagger-ui/**");
+//    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new Argon2PasswordEncoder();
     }
+
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 }

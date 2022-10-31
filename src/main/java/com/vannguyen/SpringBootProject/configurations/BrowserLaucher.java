@@ -5,6 +5,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,10 +16,11 @@ public class BrowserLaucher {
     public void lauchBrowser() {
         System.setProperty("java.awt.headless", "false");
         Desktop desktop = Desktop.getDesktop();
-        try {
-            desktop.browse(new URI("http://localhost:8080/swagger-ui.html"));
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
+//        try {
+            desktop.browseFileDirectory(new File("C:\\Program Files\\Mozilla Firefox\\firefox.exe"));
+//            desktop.browse(new URI("http://localhost:8080/swagger-ui.html"));
+//        } catch (IOException | URISyntaxException e) {
+//            e.printStackTrace();
+//        }
     }
 }
