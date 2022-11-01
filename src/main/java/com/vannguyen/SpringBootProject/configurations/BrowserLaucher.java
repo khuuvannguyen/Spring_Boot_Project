@@ -16,11 +16,10 @@ public class BrowserLaucher {
     public void lauchBrowser() {
         System.setProperty("java.awt.headless", "false");
         Desktop desktop = Desktop.getDesktop();
-//        try {
-            desktop.browseFileDirectory(new File("C:\\Program Files\\Mozilla Firefox\\firefox.exe"));
-//            desktop.browse(new URI("http://localhost:8080/swagger-ui.html"));
-//        } catch (IOException | URISyntaxException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            desktop.browse(new URI("http://localhost:8080/swagger-ui.html"));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }

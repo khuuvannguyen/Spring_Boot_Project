@@ -6,13 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
-import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +18,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests((requests) -> {
             try {
                 requests
@@ -30,10 +28,6 @@ public class WebSecurityConfig {
                         .antMatchers(HttpMethod.POST, Permission.WRITE_PERMISSIONS).hasAuthority(Permission.WRITE)
                         .antMatchers(HttpMethod.DELETE, Permission.WRITE_PERMISSIONS).hasAuthority(Permission.WRITE)
                         .anyRequest().authenticated()
-                        .and().logout()
-                        .addLogoutHandler(
-                                new HeaderWriterLogoutHandler(
-                                        new ClearSiteDataHeaderWriter(ClearSiteDataHeaderWriter.Directive.COOKIES)))
                         .and().httpBasic();
             } catch (Exception e) {
                 throw new RuntimeException(e);
